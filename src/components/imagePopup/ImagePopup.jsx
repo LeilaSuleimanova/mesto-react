@@ -1,4 +1,4 @@
-export default function PopupImage({ card, isOpen, onClose }) {
+export default function ImagePopup({ card, isOpen, onClose }) {
   return (
     <div
       className={`popup popup_background ${isOpen && "popup_opened"}`}
