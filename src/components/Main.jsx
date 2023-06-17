@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import api from "../../utils/api.js";
-import Card from "../card/card.jsx";
+import api from "../utils/api.js";
+import Card from "./Card.jsx";
 
 export default function Main({
   onEditProfile,
