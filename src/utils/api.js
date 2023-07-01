@@ -13,7 +13,6 @@ class Api {
                 authorization: this._authorization
             }
         })
-
             .then(this._returnRes)
     }
 
@@ -26,7 +25,7 @@ class Api {
             .then(this._returnRes)
     }
 
-    setUserData(data) {
+    setUserInfo(data) {
         return fetch(`${this._baseUrl}/users/me`, {
             method: 'PATCH',
             headers: this._headers,
@@ -38,7 +37,7 @@ class Api {
             .then(this._returnRes)
     }
 
-    setAvatar(data) {
+    setUserAvatar(data) {
         return fetch(`${this._baseUrl}/users/me/avatar`, {
             method: 'PATCH',
             headers: this._headers,
@@ -61,25 +60,18 @@ class Api {
             .then(this._returnRes)
     }
 
-    addlike(id) {
-        return fetch(`${this._baseUrl}/cards/${id}/likes`, {
-            method: 'PUT',
-            headers: {
-                authorization: this._authorization
-            }
+    changeLikeCardStatus(cardId, isLiked) {
+        let method = 'DELETE';
+        if (isLiked) {
+            method = 'PUT';
+        }
+        return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+            method: method,
+            headers: this._headers
         })
             .then(this._returnRes)
     }
 
-    deleteLike(id) {
-        return fetch(`${this._baseUrl}/cards/${id}/likes`, {
-            method: 'DELETE',
-            headers: {
-                authorization: this._authorization
-            }
-        })
-            .then(this._returnRes)
-    }
 
     deleteCard(cardId) {
         return fetch(`${this._baseUrl}/cards/${cardId}`, {

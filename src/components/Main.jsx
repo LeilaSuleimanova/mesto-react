@@ -1,29 +1,17 @@
-import { useEffect, useState } from "react";
-import api from "../utils/api.js";
+import { useContext } from "react";
 import Card from "./Card.jsx";
+import CurrentUserContext from "../contexts/CurrentUserContext.js";
 
 export default function Main({
   onEditProfile,
   onAddPlace,
   onEditAvatar,
   onAddCard,
+  onDelete,
+  card,
+  onCardLike,
 }) {
-  const [userName, setUserName] = useState("");
-  const [userDescription, setUserDescription] = useState("");
-  const [userAvatar, setUserAvatar] = useState("");
-  const [card, setCard] = useState([]);
-
-  useEffect(() => {
-    Promise.all([api.getData(), api.getInitialCards()]).then(
-      ([infoUser, infoCard]) => {
-        setUserName(infoUser.name);
-        setUserDescription(infoUser.about);
-        setUserAvatar(infoUser.avatar);
-        infoCard.forEach((data) => (data.myId = infoUser._id));
-        setCard(infoCard);
-      }
-    );
-  }, []);
+  const currentUser = useContext(CurrentUserContext);
 
   return (
     <main className="content">
@@ -35,14 +23,16 @@ export default function Main({
             onClick={onEditAvatar}
           >
             <img
-              src={userAvatar}
+              src={currentUser.avatar ? currentUser.avatar : "#"}
               alt="Аватар профиля"
               className="profile__avatar"
             />
           </button>
           <div className="profile__info">
             <div className="profile__info-content">
-              <h1 className="profile__title">{userName}</h1>
+              <h1 className="profile__title">
+                {currentUser.name ? currentUser.name : ""}
+              </h1>
               <button
                 aria-label="button"
                 type="button"
@@ -50,7 +40,9 @@ export default function Main({
                 onClick={onEditProfile}
               />
             </div>
-            <p className="profile__subtitle">{userDescription}</p>
+            <p className="profile__subtitle">
+              {currentUser.about ? currentUser.about : ""}
+            </p>
           </div>
         </div>
         <button
@@ -64,7 +56,12 @@ export default function Main({
           {card.map((data) => {
             return (
               <li className="element" key={data._id}>
-                <Card card={data} onAddCard={onAddCard} />
+                <Card
+                  card={data}
+                  onAddCard={onAddCard}
+                  onDelete={onDelete}
+                  onCardLike={onCardLike}
+                />
               </li>
             );
           })}

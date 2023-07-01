@@ -5,10 +5,18 @@ export default function PopupWithForm({
   children,
   isOpen,
   onClose,
+  onSubmit,
+  isValid = true,
 }) {
   return (
-    <div className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}>
-      <div className="popup__container section">
+    <div
+      className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}
+      onClick={onClose}
+    >
+      <div
+        className="popup__container section"
+        onClick={(event) => event.stopPropagation()}
+      >
         <button
           aria-label="сlose"
           type="button"
@@ -20,10 +28,16 @@ export default function PopupWithForm({
           className="popup__form"
           id="popup-form-info"
           name="popup-form-info"
-          noValidate=""
+          noValidate
+          onSubmit={onSubmit}
         >
           {children}
-          <button className="popup__save-button" type="submit">
+          <button
+            className={`popup__save-button ${
+              name === "popup-delete" ? "popup__save-button_delete" : ""
+            } ${isValid ? "" : "popup__save-button_invalid"}`}
+            type="submit"
+          >
             {popupButton || "Сохранить"}
           </button>
         </form>
